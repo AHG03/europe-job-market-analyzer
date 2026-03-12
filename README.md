@@ -1,18 +1,27 @@
 # European Tech Job Market Analyzer
 
-This project collects and analyses job postings across Europe to
-identify trends in programming languages, skills, and salaries.
+A Python data engineering project that collects and analyses
+tech job postings across Europe.
 
 ## Goals
 
 - Collect job data from public APIs
 - Store data in a database
-- Analyse tech job market trends
-- Visualise insights
+- Analyse demand for programming languages and skills
+- Visualise job market trends
+
+## Project Architecture
+
+Job APIs → Data Collector → Database → Data Analysis
 
 ## Technologies
 
 - Python
-- SQL
-- Pandas
 - REST APIs
+- Pandas
+- SQL (later)
+- Data visualisation
+
+## Project Status
+
+🚧 In development
