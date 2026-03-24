@@ -1,16 +1,30 @@
 import requests
+import json
+from pathlib import Path
 
-url = "https://www.arbeitnow.com/api/job-board-api"
+API_URL = "https://www.arbeitnow.com/api/job-board-api"
 
-response = requests.get(url)
-data = response.json()
-jobs = data["data"]
+def fetch_jobs():
+    response = requests.get(API_URL)
 
+    if response.status_code != 200:
+        raise Exception("API request failed")
 
-for job in jobs[:5]:
-    print(f"""
-Title: {job["title"]}
-Company: {job["company_name"]}
-Location: {job["location"]}
-Tags: {", ".join(job["tags"])}
-""")
+    return response.json()
+
+def save_jobs(data):
+    output_path = Path("../../data/raw/jobs_raw.json")
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(output_path, "w") as file:
+        json.dump(data, file, indent = 2)
+
+    print(f"Saved jobs to {output_path}")
+
+def main():
+    data = fetch_jobs()
+    save_jobs(data)
+
+if __name__ == "__main__":
+    main()
