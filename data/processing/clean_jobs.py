@@ -1,10 +1,24 @@
 import json
+import re
 from pathlib import Path
 
 RAW_DATA_PATH = Path("../../data/raw/jobs_raw.json")
 PROCESSED_DATA_PATH = Path("../../data/processed/jobs_cleaned.json")
-KNOWN_SKILLS = ["python", "java", "javascript", "typescript", "sql", "docker",
-                "kubernetes", "aws", "azure", "gcp", "react", "angular", "node", "pandas"]
+SKILL_MAP = {
+    "python": ["python"],
+    "java": ["java"],
+    "javascript": ["javascript", "js"],
+    "typescript": ["typescript", "ts"],
+    "sql": ["sql"],
+    "docker": ["docker"],
+    "kubernetes": ["kubernetes", "k8s"],
+    "aws": ["aws", "amazon web services"],
+    "azure": ["azure"],
+    "gcp": ["gcp", "google cloud"],
+    "react": ["react", "reactjs"],
+    "angular": ["angular"],
+    "node": ["node", "nodejs", "node.js"],
+}
 
 
 def load_raw_data():
@@ -17,18 +31,20 @@ def inspect_data(data):
     print("Total jobs:", len(jobs))
     print("Keys in one job:", jobs[0].keys())
 
-
 def extract_skills(text):
     text = text.lower()
 
-    found_skills = []
+    found_skills = set()
 
-    for skill in KNOWN_SKILLS:
-        if skill in text:
-            found_skills.append(skill)
+    for standard_skill, variations in SKILL_MAP.items():
+        for variation in variations:
+            # Create regex pattern with word boundaries
+            pattern = r"\b" + re.escape(variation) + r"\b"
 
-    return list(set(found_skills))
+            if re.search(pattern, text):
+                found_skills.add(standard_skill)
 
+    return list(found_skills)
 
 def transform_job(job):
     description = job.get("description", "")
