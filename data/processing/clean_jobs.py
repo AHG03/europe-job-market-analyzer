@@ -74,7 +74,7 @@ def process_jobs(data):
 def save_clean_data(cleaned_jobs):
     PROCESSED_DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(PROCESSED_DATA_PATH, "w") as file:
+    with open(PROCESSED_DATA_PATH, "w", encoding="utf-8") as file:
         json.dump(cleaned_jobs, file, indent = 2, ensure_ascii = False)
 
     print(f"Saved cleaned jobs to {PROCESSED_DATA_PATH}")
